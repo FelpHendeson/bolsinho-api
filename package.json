@@ -4,7 +4,9 @@
   "description": "Bolsinho 💰",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsup --watch",
+    "build": "tsup",
+    "start": "node dist/index.js"
   },
   "repository": {
     "type": "git",
