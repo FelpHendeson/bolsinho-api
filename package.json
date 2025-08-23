@@ -1,0 +1,33 @@
+{
+  "name": "bolsinhoapi",
+  "version": "1.0.0",
+  "description": "Bolsinho 💰",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FelpHendeson/bolsinho-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FelpHendeson/bolsinho-api/issues"
+  },
+  "homepage": "https://github.com/FelpHendeson/bolsinho-api#readme",
+  "dependencies": {
+    "@fastify/cors": "^11.1.0",
+    "@prisma/client": "^6.14.0",
+    "fastify": "^5.5.0",
+    "prisma": "^6.14.0",
+    "zod": "^4.0.17"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "tsup": "^8.5.0",
+    "tsx": "^4.20.4",
+    "typescript": "^5.9.2"
+  }
+}
