@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧪 Teste da API Bolsinho</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .endpoint {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .endpoint h3 {
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .method {
+            background: #667eea;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .url {
+            background: #e9ecef;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-family: monospace;
+            color: #495057;
+            margin: 10px 0;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+
+        .response {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .success {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+
+        .error {
+            border-color: #dc3545;
+            background: #f8d7da;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .status.success {
+            background: #28a745;
+            color: white;
+        }
+
+        .status.error {
+            background: #dc3545;
+            color: white;
+        }
+
+        .server-status {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .server-status.online {
+            background: #d4edda;
+            border: 1px solid #28a745;
+        }
+
+        .server-status.offline {
+            background: #f8d7da;
+            border: 1px solid #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 Teste da API Bolsinho</h1>
+            <p>Teste todas as rotas da API de usuários de forma visual e interativa</p>
+        </div>
+
+        <div class="content">
+            <!-- Status do Servidor -->
+            <div class="server-status" id="serverStatus">
+                <h3>Status do Servidor</h3>
+                <p id="statusText">Verificando...</p>
+            </div>
+
+            <!-- Registrar Usuário -->
+            <div class="endpoint">
+                <h3>
+                    <span class="method">POST</span>
+                    Registrar Usuário
+                </h3>
+                <div class="url">POST /users/register</div>
+                
+                <div class="form-group">
+                    <label>Nome:</label>
+                    <input type="text" id="registerName" placeholder="Digite o nome" value="João Silva">
+                </div>
+                
+                <div class="form-group">
+                    <label>Email:</label>
+                    <input type="email" id="registerEmail" placeholder="Digite o email" value="joao@email.com">
+                </div>
+                
+                <div class="form-group">
+                    <label>Idade:</label>
+                    <input type="number" id="registerAge" placeholder="Digite a idade" value="25">
+                </div>
+                
+                <button class="btn" onclick="registerUser()">Registrar Usuário</button>
+                <div id="registerResponse" class="response" style="display: none;"></div>
+            </div>
+
+            <!-- Listar Usuários -->
+            <div class="endpoint">
+                <h3>
+                    <span class="method">GET</span>
+                    Listar Todos os Usuários
+                </h3>
+                <div class="url">GET /users/</div>
+                
+                <button class="btn" onclick="listUsers()">Listar Usuários</button>
+                <div id="listResponse" class="response" style="display: none;"></div>
+            </div>
+
+            <!-- Buscar Usuário por ID -->
+            <div class="endpoint">
+                <h3>
+                    <span class="method">GET</span>
+                    Buscar Usuário por ID
+                </h3>
+                <div class="url">GET /users/:id</div>
+                
+                <div class="form-group">
+                    <label>ID do Usuário:</label>
+                    <input type="text" id="searchId" placeholder="Digite o ID" value="123">
+                </div>
+                
+                <button class="btn" onclick="searchUser()">Buscar Usuário</button>
+                <div id="searchResponse" class="response" style="display: none;"></div>
+            </div>
+
+            <!-- Atualizar Usuário -->
+            <div class="endpoint">
+                <h3>
+                    <span class="method">PUT</span>
+                    Atualizar Usuário
+                </h3>
+                <div class="url">PUT /users/:id</div>
+                
+                <div class="form-group">
+                    <label>ID do Usuário:</label>
+                    <input type="text" id="updateId" placeholder="Digite o ID" value="123">
+                </div>
+                
+                <div class="form-group">
+                    <label>Nome:</label>
+                    <input type="text" id="updateName" placeholder="Digite o novo nome" value="João Silva Atualizado">
+                </div>
+                
+                <div class="form-group">
+                    <label>Email:</label>
+                    <input type="email" id="updateEmail" placeholder="Digite o novo email" value="joao.novo@email.com">
+                </div>
+                
+                <div class="form-group">
+                    <label>Idade:</label>
+                    <input type="number" id="updateAge" placeholder="Digite a nova idade" value="26">
+                </div>
+                
+                <button class="btn" onclick="updateUser()">Atualizar Usuário</button>
+                <div id="updateResponse" class="response" style="display: none;"></div>
+            </div>
+
+            <!-- Deletar Usuário -->
+            <div class="endpoint">
+                <h3>
+                    <span class="method">DELETE</span>
+                    Deletar Usuário
+                </h3>
+                <div class="url">DELETE /users/:id</div>
+                
+                <div class="form-group">
+                    <label>ID do Usuário:</label>
+                    <input type="text" id="deleteId" placeholder="Digite o ID" value="123">
+                </div>
+                
+                <button class="btn" onclick="deleteUser()">Deletar Usuário</button>
+                <div id="deleteResponse" class="response" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8080';
+        
+        // Verificar status do servidor
+        async function checkServerStatus() {
+            try {
+                const response = await fetch(`${API_BASE}/ping`);
+                if (response.ok) {
+                    document.getElementById('serverStatus').className = 'server-status online';
+                    document.getElementById('statusText').textContent = '✅ Servidor Online - Porta 8080';
+                } else {
+                    throw new Error('Servidor não respondeu corretamente');
+                }
+            } catch (error) {
+                document.getElementById('serverStatus').className = 'server-status offline';
+                document.getElementById('statusText').textContent = '❌ Servidor Offline - Verifique se está rodando na porta 8080';
+            }
+        }
+
+        // Registrar usuário
+        async function registerUser() {
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const age = parseInt(document.getElementById('registerAge').value);
+
+            const userData = { name, email, age };
+            
+            try {
+                const response = await fetch(`${API_BASE}/users/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(userData)
+                });
+
+                const result = await response.json();
+                showResponse('registerResponse', response.ok, response.status, result);
+            } catch (error) {
+                showResponse('registerResponse', false, 0, { error: error.message });
+            }
+        }
+
+        // Listar usuários
+        async function listUsers() {
+            try {
+                const response = await fetch(`${API_BASE}/users/`);
+                const result = await response.json();
+                showResponse('listResponse', response.ok, response.status, result);
+            } catch (error) {
+                showResponse('listResponse', false, 0, { error: error.message });
+            }
+        }
+
+        // Buscar usuário por ID
+        async function searchUser() {
+            const id = document.getElementById('searchId').value;
+            
+            try {
+                const response = await fetch(`${API_BASE}/users/${id}`);
+                const result = await response.json();
+                showResponse('searchResponse', response.ok, response.status, result);
+            } catch (error) {
+                showResponse('searchResponse', false, 0, { error: error.message });
+            }
+        }
+
+        // Atualizar usuário
+        async function updateUser() {
+            const id = document.getElementById('updateId').value;
+            const name = document.getElementById('updateName').value;
+            const email = document.getElementById('updateEmail').value;
+            const age = parseInt(document.getElementById('updateAge').value);
+
+            const userData = { name, email, age };
+            
+            try {
+                const response = await fetch(`${API_BASE}/users/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(userData)
+                });
+
+                const result = await response.json();
+                showResponse('updateResponse', response.ok, response.status, result);
+            } catch (error) {
+                showResponse('updateResponse', false, 0, { error: error.message });
+            }
+        }
+
+        // Deletar usuário
+        async function deleteUser() {
+            const id = document.getElementById('deleteId').value;
+            
+            try {
+                const response = await fetch(`${API_BASE}/users/${id}`, {
+                    method: 'DELETE'
+                });
+                
+                const result = await response.json();
+                showResponse('deleteResponse', response.ok, response.status, result);
+            } catch (error) {
+                showResponse('deleteResponse', false, 0, { error: error.message });
+            }
+        }
+
+        // Mostrar resposta
+        function showResponse(elementId, success, status, data) {
+            const element = document.getElementById(elementId);
+            const statusElement = document.createElement('div');
+            
+            statusElement.className = `status ${success ? 'success' : 'error'}`;
+            statusElement.textContent = success ? `✅ Sucesso (${status})` : `❌ Erro (${status})`;
+            
+            element.innerHTML = '';
+            element.appendChild(statusElement);
+            element.appendChild(document.createTextNode(JSON.stringify(data, null, 2)));
+            element.style.display = 'block';
+            
+            if (success) {
+                element.className = 'response success';
+            } else {
+                element.className = 'response error';
+            }
+        }
+
+        // Verificar status do servidor ao carregar a página
+        window.onload = function() {
+            checkServerStatus();
+            // Verificar a cada 5 segundos
+            setInterval(checkServerStatus, 5000);
+        };
+    </script>
+</body>
+</html>
