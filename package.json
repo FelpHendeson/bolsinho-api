@@ -2,11 +2,12 @@
   "name": "bolsinhoapi",
   "version": "1.0.0",
   "description": "Bolsinho 💰",
-  "main": "index.js",
+  "main": "server.ts",
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup",
-    "start": "node dist/index.js"
+    "start": "node dist/server.ts",
+    "start:dev": "tsx src/server.ts"
   },
   "repository": {
     "type": "git",
