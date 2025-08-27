@@ -1,30 +1,20 @@
-import fastify from 'fastify'
-import cors from '@fastify/cors'
-import userRoutes from './routes/user.route'
+import 'dotenv/config';
+import Fastify from "fastify";
+import cors from "@fastify/cors";
+import prismaPlugin from "./plugins/prisma";
 
-const server = fastify()
+const app = Fastify();
+await app.register(cors, { origin: true });
+await app.register(prismaPlugin);
 
-// Configuração do CORS para permitir requisições do navegador
-server.register(cors, {
-  origin: true, // Permite todas as origens
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Permite todos os métodos
-  allowedHeaders: ['Content-Type', 'Authorization'], // Headers permitidos
-  preflightContinue: false,
-  optionsSuccessStatus: 204
-})
+// health simples
+app.get("/ping", async () => ({ pong: true }));
 
-// Registra as rotas de usuário com prefixo /users
-server.register(userRoutes, { prefix: '/users' })
+// health que testa o banco
+app.get("/health-db", async function () {
+  const [{ ok }] = await this.prisma.$queryRaw<{ ok: number }[]>`SELECT 1 as ok`;
+  return { db: ok === 1 ? "up" : "down" };
+});
 
-server.get('/ping', async (request, reply) => {
-  return 'pong\n'
-})
-
-server.listen({ port: 8080 }, (err, address) => {
-  if (err) {
-    console.error(err)
-    process.exit(1)
-  }
-  console.log(`Server listening at ${address}`)
-})
+const PORT = Number(process.env.PORT ?? 8080);
+await app.listen({ port: PORT });
